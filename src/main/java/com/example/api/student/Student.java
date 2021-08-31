@@ -1,29 +1,39 @@
 package com.example.api.student;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import java.time.LocalDate;
-@Data// при формировании JSON ответа, запрос идет на get field (getters), поэтобу добавляем аннотацию lombok ли генерируем геттеры
-@NoArgsConstructor
+import java.time.Period;
+
 @Entity
+@Getter // при формировании JSON ответа, запрос идет на get field (getters), поэтому добавляем аннотацию lombok или генерируем геттеры
+@ToString
+@NoArgsConstructor
 public class Student {
     @Id
-    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "student_sequence")
     @SequenceGenerator(name="student_sequence", sequenceName = "student_sequence")
-    private Long id;
-    private String name;
-    private LocalDate birthDate;
+    @GeneratedValue (strategy = GenerationType.SEQUENCE, generator = "student_sequence")
 
-    public Student(String name, LocalDate birthDate) {
-        this.name = name;
-        this.birthDate = birthDate;
+    @Column (name = "id")
+    private Long id;
+//    private String name;
+//    private LocalDate birthdate;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "birthdate")
+    private LocalDate birthdate;
+
+    public int getAge (){ //не создаем переменную и не добавляем в БД, возраст отобразится только в ответе в формате JSON
+        return Period.between(birthdate, LocalDate.now()).getYears();
     }
 
+    public Student(String name, LocalDate birthdate) {
+        this.name = name;
+        this.birthdate = birthdate;
+    }
 }
