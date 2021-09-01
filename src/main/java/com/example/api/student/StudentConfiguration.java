@@ -11,12 +11,12 @@ import java.util.List;
 @Configuration// аннотация на уровне класса, указывающая, что объект является источником определений bean-компонентов.
 public class StudentConfiguration {
     @Bean
-    public CommandLineRunner commandLineRunner(StudentRepository studentRepository){
+    public CommandLineRunner commandLineRunner(StudentRepository studentRepository) {
         return args -> {
             studentRepository.saveAll(List.of(
-                new Student("Alex", LocalDate.of(2000, Month.JANUARY, 1)),
-                new Student("Tom", LocalDate.of(2002, Month.NOVEMBER, 11)
-            )));
+                    new Student("Alex", "alex@gmail.com", LocalDate.of(2000, Month.JANUARY, 1)),
+                    new Student("Tom", "tom@gmail.com", LocalDate.of(2002, Month.NOVEMBER, 11)
+                    )));
         };
     }
 }
